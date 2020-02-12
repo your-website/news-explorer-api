@@ -46,7 +46,6 @@ app.use(errorLogger);
 
 app.use(errors());
 
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
@@ -60,8 +59,4 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log('Ссылка на сервер:');
-  // eslint-disable-next-line no-console
-  console.log(BASE_PATH);
 });
