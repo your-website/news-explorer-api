@@ -6,7 +6,7 @@ const { errors } = require('celebrate');
 const helmet = require('helmet');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const limiter = require('./rate limiter/rate-limiter');
+const { limiter } = require('./rate limiter/rate-limiter');
 
 const { PORT = 3000, BASE_PATH } = process.env;
 
