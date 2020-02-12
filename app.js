@@ -1,6 +1,6 @@
 require('dotenv').config();
+require('./mongod');
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
@@ -16,13 +16,6 @@ app.use(helmet());
 app.use(helmet.noCache());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// подключаемся к серверу mongo
-mongoose.connect('mongodb://localhost:27017/mestodb', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
 
 app.use(requestLogger);
 
