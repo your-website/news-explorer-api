@@ -4,11 +4,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
-const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const rootRouter = require('./routes/index');
 const { limiter } = require('./rate limiter/rate-limiter');
+const errorsCentr = require('./middlewares/errors');
 
-const { PORT = 3000, BASE_PATH } = process.env;
+const { PORT = 3000 } = process.env;
 
 const app = express();
 app.use(limiter);
@@ -19,37 +20,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
 
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
-
-app.use('/', require('./routes/auth'));
-
-app.use(auth);
-
-app.use('/', require('./routes/index'));
-
-app.use((req, res) => {
-  res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
-});
+app.use(rootRouter);
 
 app.use(errorLogger);
 
 app.use(errors());
 
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка'
-        : message,
-    });
-});
+app.use(errorsCentr);
 
 app.listen(PORT, () => {
 });

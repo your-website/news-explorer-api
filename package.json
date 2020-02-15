@@ -1,15 +1,16 @@
 {
-  "name": "lesson-twelve",
+  "name": "news-explorer-api",
   "version": "1.0.0",
-  "description": "interactive page where you can add photos, delete them and like",
+  "description": "news-explorer-api",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon app.js",
-    "start": "node app.js"
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
+    "start": "cross-env NODE_ENV=production node app.js"
   },
   "author": "Roman Kolpachev",
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.0",
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",

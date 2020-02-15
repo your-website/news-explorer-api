@@ -1,5 +1,6 @@
 const Article = require('../models/article');
-const { NotImplemented } = require('../middlewares/errors');
+const NotImplemented = require('../errors/NotImplemented');
+const { NO_CARD_ID } = require('../CONST/MESSAGE');
 
 function getArticles(req, res, next) {
   Article.find({ owner: req.user._id })
@@ -27,9 +28,11 @@ function deleteArticle(req, res, next) {
             res.send({ data: article });
           })
           .catch(next);
-      } else throw new NotImplemented('Можно удалить только свою карточку');
+      } else throw new Error();
     })
-    .catch(next);
+    .catch(() => {
+      next(new NotImplemented(NO_CARD_ID));
+    });
 }
 
 module.exports = {

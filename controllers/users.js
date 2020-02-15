@@ -1,7 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { NotFoundError, Unauthorized } = require('../middlewares/errors');
+const Unauthorized = require('../errors/Unauthorized');
+const NotFoundError = require('../errors/NotFoundError');
+const { NO_FOUND_USER, ERROR_EMAIL_NAME, NO_USER_ID } = require('../CONST/MESSAGE');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -9,7 +11,7 @@ function getUser(req, res, next) {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError(NO_FOUND_USER);
       } else {
         res.send({ data: user });
       }
@@ -23,7 +25,7 @@ function login(req, res, next) {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       if (!user) {
-        throw new Unauthorized('Неправильные почта или пароль');
+        throw new Unauthorized(ERROR_EMAIL_NAME);
       }
       const token = jwt.sign(
         { _id: user._id },
@@ -37,7 +39,9 @@ function login(req, res, next) {
       })
         .end();
     })
-    .catch(next);
+    .catch(() => {
+      next(new Unauthorized(ERROR_EMAIL_NAME));
+    });
 }
 
 function createUser(req, res, next) {
@@ -49,7 +53,7 @@ function createUser(req, res, next) {
     }))
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id');
+        throw new NotFoundError(NO_USER_ID);
       }
       res.status(201).send({
         _id: user._id,

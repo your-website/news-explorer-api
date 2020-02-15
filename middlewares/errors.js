@@ -1,23 +1,14 @@
-// eslint-disable-next-line max-classes-per-file
-class NotFoundError extends Error {
-  constructor(message) {
-    super(message);
-    this.statusCode = 404;
-  }
-}
+const { SERVER_ERROR } = require('../CONST/MESSAGE');
 
-class Unauthorized extends Error {
-  constructor(message) {
-    super(message);
-    this.statusCode = 401;
-  }
-}
+// eslint-disable-next-line no-unused-vars
+module.exports = (err, req, res, next) => {
+  const { statusCode = 500, message } = err;
 
-class NotImplemented extends Error {
-  constructor(message) {
-    super(message);
-    this.statusCode = 501;
-  }
-}
-
-module.exports = { NotFoundError, Unauthorized, NotImplemented };
+  res
+    .status(statusCode)
+    .send({
+      message: statusCode === 500
+        ? SERVER_ERROR
+        : message,
+    });
+};
