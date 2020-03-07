@@ -12,6 +12,22 @@ const errorsCentr = require('./middlewares/errors');
 const { PORT = 3000 } = process.env;
 
 const app = express();
+const allowedCors = [
+    'https://your-news-explorer.tk',
+    'http://your-news-explorer.tk',
+    'localhost:3000',
+    'http://localhost:8080'
+];
+
+app.use(function(req, res, next) {
+    const { origin } = req.headers; // Записываем в переменную origin соответствующий заголовок
+
+    if (allowedCors.includes(origin)) { // Проверяем, что значение origin есть среди разрешённых доменов
+        res.header('Access-Control-Allow-Origin', origin);
+    }
+
+    next();
+});
 app.use(limiter);
 app.use(helmet());
 app.use(helmet.noCache());
