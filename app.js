@@ -21,8 +21,13 @@ const allowedCors = [
 ];
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", '*')
-    res.header('Access-Control-Allow-Headers', '*');
+    const { origin } = req.headers; // Записываем в переменную origin соответствующий заголовок
+
+    if (allowedCors.includes(origin)) { // Проверяем, что значение origin есть среди разрешённых доменов
+        res.header('Access-Control-Allow-Origin', origin);
+    }
+
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token');
     res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
 
     next();
