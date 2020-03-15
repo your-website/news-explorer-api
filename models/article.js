@@ -1,5 +1,6 @@
 const validator = require('validator');
 const mongoose = require('mongoose');
+const { NOT_VALID_URL } = require('../CONST/MESSAGE');
 
 const articleSchema = new mongoose.Schema({
   keyword: {
@@ -29,7 +30,7 @@ const articleSchema = new mongoose.Schema({
       validator(validate) {
         return validator.isURL(validate);
       },
-      message: (props) => `${props.value} is not a valid url!`,
+      message: (props) => `${props.value} ${NOT_VALID_URL}`,
     },
   },
   image: {
@@ -39,7 +40,7 @@ const articleSchema = new mongoose.Schema({
       validator(validate) {
         return validator.isURL(validate);
       },
-      message: (props) => `${props.value} is not a valid url!`,
+      message: (props) => `${props.value} ${NOT_VALID_URL}`,
     },
   },
   owner: {

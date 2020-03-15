@@ -4,6 +4,7 @@ const User = require('../models/user');
 const Unauthorized = require('../errors/Unauthorized');
 const NotFoundError = require('../errors/NotFoundError');
 const { NO_FOUND_USER, ERROR_EMAIL_NAME, NO_USER_ID } = require('../CONST/MESSAGE');
+const { DEV_SECRET } = require('../CONST/DEV_SECRET');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -29,16 +30,10 @@ function login(req, res, next) {
       }
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        NODE_ENV === 'production' ? JWT_SECRET : DEV_SECRET,
         { expiresIn: '7d' },
       );
       res.send({ token });
-      // res.cookie('jwt', token, {
-      //   maxAge: 3600000,
-      //   httpOnly: true,
-      //   sameSite: true,
-      // })
-      //   .end();
     })
     .catch(() => {
       next(new Unauthorized(ERROR_EMAIL_NAME));

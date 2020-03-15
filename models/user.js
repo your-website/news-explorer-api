@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
-const { ERROR_EMAIL_NAME } = require('../CONST/MESSAGE');
+const { ERROR_EMAIL_NAME, NOT_VALID_URL } = require('../CONST/MESSAGE');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
       validator(validate) {
         return validator.isEmail(validate);
       },
-      message: (props) => `${props.value} is not a valid url!`,
+      message: (props) => `${props.value} ${NOT_VALID_URL}`,
     },
   },
   password: {
