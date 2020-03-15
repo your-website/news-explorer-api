@@ -1,7 +1,7 @@
 const Article = require('../models/article');
 const NotImplemented = require('../errors/NotImplemented');
-const { NO_CARD_ID } = require('../CONST/MESSAGE');
-
+const NotAccess = require('../errors/NotAccess');
+const { NO_CARD_ID, NOT_ACCESS } = require('../CONST/MESSAGE');
 function getArticles(req, res, next) {
   Article.find({ owner: req.user._id })
     .then((articles) => res.send({ data: articles }))
@@ -28,7 +28,7 @@ function deleteArticle(req, res, next) {
             res.send({ data: article });
           })
           .catch(next);
-      } else throw new Error();
+      } else next(new NotAccess(NOT_ACCESS));
     })
     .catch(() => {
       next(new NotImplemented(NO_CARD_ID));
