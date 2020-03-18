@@ -17,5 +17,5 @@ module.exports = {
   SERVER_ERROR,
   NOT_FOUND_ERROR,
   NOT_VALID_URL,
-  NOT_ACCESS
+  NOT_ACCESS,
 };

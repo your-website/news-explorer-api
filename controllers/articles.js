@@ -2,6 +2,7 @@ const Article = require('../models/article');
 const NotImplemented = require('../errors/NotImplemented');
 const NotAccess = require('../errors/NotAccess');
 const { NO_CARD_ID, NOT_ACCESS } = require('../CONST/MESSAGE');
+
 function getArticles(req, res, next) {
   Article.find({ owner: req.user._id })
     .then((articles) => res.send({ data: articles }))
